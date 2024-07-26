@@ -33,7 +33,9 @@ jobs:
 
     - name: Define Bicep Params
       run: |
-        echo "ENV=$ENV" > bicep-parameters.json
+        echo "{
+          \"ENV\": \"$ENV\"
+        }" > bicep-parameters.json
 
     - name: Deploy Bicep Template
       id: deploy
