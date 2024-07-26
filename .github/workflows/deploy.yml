@@ -36,8 +36,7 @@ jobs:
       run: |
         az deployment group create \
           --resource-group $TARGET_RESOURCE_GROUP \
-          --template-file .azure/main.bicep \
-          --rollback-on-error
+          --template-file .azure/main.bicep
 
     # - name: Set up Docker Buildx
     #   uses: docker/setup-buildx-action@v1
