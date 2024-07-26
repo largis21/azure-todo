@@ -31,12 +31,17 @@ jobs:
         echo "ACR_NAME=${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}" >> $GITHUB_ENV
         echo "AZURE_SHARED_RESOURCE_GROUP_NAME=${{ secrets.AZURE_SHARED_RESOURCE_GROUP_NAME }}" >> $GITHUB_ENV
 
+    - name: Define Bicep Params
+      run: |
+        echo "ENV=$ENV" > bicep-parameters.json
+
     - name: Deploy Bicep Template
       id: deploy
       run: |
         az deployment group create \
           --resource-group $TARGET_RESOURCE_GROUP \
-          --template-file .azure/main.bicep
+          --template-file .azure/main.bicep \
+          --parameters bicep-parameters.json
 
     # - name: Set up Docker Buildx
     #   uses: docker/setup-buildx-action@v1
