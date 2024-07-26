@@ -1,4 +1,5 @@
 param location string = 'westeurope'
+param env string
 
 // param acrName string
 // param image string
@@ -18,7 +19,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
 }
 
 resource webApp 'Microsoft.Web/sites@2023-12-01' = {
-  name: 'azure-todo-web-app-2'
+  name: 'azure-todo-web-app-${env}'
   location: location
   // identity: {
   //   type: 'UserAssigned'
