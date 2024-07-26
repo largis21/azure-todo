@@ -18,7 +18,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
 }
 
 resource webApp 'Microsoft.Web/sites@2023-12-01' = {
-  name: 'web-app'
+  name: 'azure-todo-web-app-test'
   location: location
   // identity: {
   //   type: 'UserAssigned'
