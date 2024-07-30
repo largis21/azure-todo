@@ -24,14 +24,13 @@ jobs:
 
     - name: Set Environment Variables
       run: |
-        # if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-        #   echo "ENV=prod" >> $GITHUB_ENV
-        # elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
-        #   echo "ENV=staging" >> $GITHUB_ENV
-        # elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-        #   echo "ENV=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
-        # fi
-        echo github.event.pull_request.head.ref
+        if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+          echo "ENV=prod" >> $GITHUB_ENV
+        elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+          echo "ENV=staging" >> $GITHUB_ENV
+        elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+          echo "ENV=${{ github.event.pull_request.head.ref }}"
+        fi
 
     # - name: Define Bicep Params
     #   run: |
