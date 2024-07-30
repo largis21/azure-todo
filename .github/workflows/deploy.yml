@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-      - development
+      - staging
+  pull_request:
+    branches:
+      - staging
 
 jobs:
   build-and-deploy:
@@ -21,29 +24,30 @@ jobs:
 
     - name: Set Environment Variables
       run: |
-        if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
-          echo "ENV=prod" >> $GITHUB_ENV
-          echo "TARGET_RESOURCE_GROUP=${{ secrets.AZURE_PRODUCTION_RESOURCE_GROUP_NAME }}" >> $GITHUB_ENV
-        elif [[ "${GITHUB_REF}" == "refs/heads/development" ]]; then
-          echo "ENV=dev" >> $GITHUB_ENV
-          echo "TARGET_RESOURCE_GROUP=${{ secrets.AZURE_DEVELOPMENT_RESOURCE_GROUP_NAME }}" >> $GITHUB_ENV
-        fi
-        echo "ACR_NAME=${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}" >> $GITHUB_ENV
-        echo "AZURE_SHARED_RESOURCE_GROUP_NAME=${{ secrets.AZURE_SHARED_RESOURCE_GROUP_NAME }}" >> $GITHUB_ENV
+        # if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+        #   echo "ENV=prod" >> $GITHUB_ENV
+        # elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+        #   echo "ENV=staging" >> $GITHUB_ENV
+        # elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+        #   echo "ENV=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+        # fi
+        echo github.event.pull_request.head.ref
 
     - name: Define Bicep Params
       run: |
         echo "{
-          'ENV': {'value': '$ENV'}
+          'env': {'value': '$ENV'}
+          'location': {'value': 'westeurope'}
         }" > bicep-parameters.json
 
-    - name: Deploy Bicep Template
-      id: deploy
-      run: |
-        az deployment group create \
-          --resource-group $TARGET_RESOURCE_GROUP \
-          --template-file .azure/main.bicep \
-          --parameters bicep-parameters.json
+    # - name: Deploy Bicep Template
+    #   id: deploy
+    #   run: |
+    #     az deployment sub create \
+    #       --name Deployment \
+    #       --template-file .azure/main.bicep \                                                                                         
+    #       --parameters bicep-parameters.json \
+    #       --location westeurope
 
     # - name: Set up Docker Buildx
     #   uses: docker/setup-buildx-action@v1
