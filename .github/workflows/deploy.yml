@@ -44,7 +44,7 @@ jobs:
     - name: Deploy Shared Resources
       run: |
         az deployment sub create \
-          --name "Shared Deployment-${COMMIT_HASH}" \
+          --name "Shared-Deployment-${COMMIT_HASH}" \
           --template-file .azure/shared.bicep \
           --parameters bicep-parameters.json \
           --location westeurope
