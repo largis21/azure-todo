@@ -33,12 +33,12 @@ jobs:
         # fi
         echo github.event.pull_request.head.ref
 
-    - name: Define Bicep Params
-      run: |
-        echo "{
-          'env': {'value': '$ENV'}
-          'location': {'value': 'westeurope'}
-        }" > bicep-parameters.json
+    # - name: Define Bicep Params
+    #   run: |
+    #     echo "{
+    #       'env': {'value': '$ENV'}
+    #       'location': {'value': 'westeurope'}
+    #     }" > bicep-parameters.json
 
     # - name: Deploy Bicep Template
     #   id: deploy
