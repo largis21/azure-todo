@@ -29,24 +29,24 @@ jobs:
         elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
           echo "ENV=staging" >> $GITHUB_ENV
         elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-          echo "ENV=${{ github.event.pull_request.head.ref }}"
+          echo "ENV=pr-${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
         fi
 
-    # - name: Define Bicep Params
-    #   run: |
-    #     echo "{
-    #       'env': {'value': '$ENV'}
-    #       'location': {'value': 'westeurope'}
-    #     }" > bicep-parameters.json
+    - name: Define Bicep Params
+      run: |
+        echo "{
+          'env': {'value': '$ENV'}
+          'location': {'value': 'westeurope'}
+        }" > bicep-parameters.json
 
-    # - name: Deploy Bicep Template
-    #   id: deploy
-    #   run: |
-    #     az deployment sub create \
-    #       --name Deployment \
-    #       --template-file .azure/main.bicep \                                                                                         
-    #       --parameters bicep-parameters.json \
-    #       --location westeurope
+    - name: Deploy Bicep Template
+      id: deploy
+      run: |
+        az deployment sub create \
+          --name Deployment \
+          --template-file .azure/main.bicep \                                                                                         
+          --parameters bicep-parameters.json \
+          --location westeurope
 
     # - name: Set up Docker Buildx
     #   uses: docker/setup-buildx-action@v1
