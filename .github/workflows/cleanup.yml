@@ -19,7 +19,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  - name: Set ENV Variable to Source Branch
+    - name: Set ENV Variable to Source Branch
       run: |
         echo "ENV=pr-${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
 
