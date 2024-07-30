@@ -1,0 +1,34 @@
+name: Cleanup on PR Merge to Staging
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  cleanup:
+    if: github.event.pull_request.base.ref == 'staging'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+  - name: Set ENV Variable to Source Branch
+      run: |
+        echo "ENV=pr-${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+
+    - name: Delete Resource Group if it exists
+      run: |
+        RESOURCE_GROUP_NAME="rg-$ENV"  # Replace with your resource group name
+        if az group show --name "$RESOURCE_GROUP_NAME" &> /dev/null; then
+          echo "Resource group $RESOURCE_GROUP_NAME exists. Deleting..."
+          # az group delete --name "$RESOURCE_GROUP_NAME" --yes --no-wait
+        else
+          echo "Resource group $RESOURCE_GROUP_NAME does not exist."
+        fi
