@@ -25,10 +25,10 @@ jobs:
 
     - name: Delete Resource Group if it exists
       run: |
-        RESOURCE_GROUP_NAME="rg-app-$ENV"  # Replace with your resource group name
+        RESOURCE_GROUP_NAME="rg-app-$ENV"
         if az group show --name "$RESOURCE_GROUP_NAME" &> /dev/null; then
           echo "Resource group $RESOURCE_GROUP_NAME exists. Deleting..."
-          # az group delete --name "$RESOURCE_GROUP_NAME" --yes --no-wait
+          az group delete --name "$RESOURCE_GROUP_NAME" --yes --no-wait
         else
           echo "Resource group $RESOURCE_GROUP_NAME does not exist."
         fi
