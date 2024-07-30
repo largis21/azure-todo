@@ -39,7 +39,7 @@ jobs:
           'env': {'value': '$ENV'},
           'location': {'value': 'westeurope'},
           'acrName': {'value': '$ACR_NAME'}
-        }" > bicep-main-parameters.json
+        }" > bicep-parameters.json
 
     - name: Deploy Shared Resources
       run: |
