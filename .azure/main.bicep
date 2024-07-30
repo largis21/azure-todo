@@ -1,10 +1,6 @@
 targetScope='subscription'
 
 param location string
-@allowed([
-  'prod'
-  'dev'
-])
 param env string
 
 // param acrName string

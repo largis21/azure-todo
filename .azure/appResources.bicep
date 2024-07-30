@@ -1,8 +1,4 @@
 param location string
-@allowed([
-  'prod'
-  'dev'
-])
 param env string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
