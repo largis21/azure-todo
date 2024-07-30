@@ -1,6 +1,7 @@
 targetScope='subscription'
 
 param location string
+param acrName string
 
 resource sharedRG 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   name: 'rg-shared'
@@ -12,5 +13,6 @@ module acr 'acr.bicep' = {
   scope: sharedRG
   params: {
     location: location
+    acrName: acrName
   }
 }
