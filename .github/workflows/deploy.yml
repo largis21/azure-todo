@@ -31,32 +31,42 @@ jobs:
         elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
           echo "ENV=pr-${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
         fi
+        echo COMMIT_HASH=$(echo "${GITHUB_SHA}" | cut -c1-7) >> $GITHUB_ENV
 
     - name: Define Bicep Params
       run: |
         echo "{
           'env': {'value': '$ENV'},
-          'location': {'value': 'westeurope'}
-        }" > bicep-parameters.json
+          'location': {'value': 'westeurope'},
+          'acrName': {'value': '$ACR_NAME'}
+        }" > bicep-main-parameters.json
+
+    - name: Deploy Shared Resources
+      run: |
+        az deployment sub create \
+          --name "Shared Deployment-${COMMIT_HASH}" \
+          --template-file .azure/shared.bicep \
+          --parameters bicep-parameters.json \
+          --location westeurope
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to Azure Container Registry
+      run: |
+        echo ${{ secrets.AZURE_CLIENT_SECRET }} | docker login $ACR_NAME.azurecr.io --username ${{ secrets.AZURE_CLIENT_ID }} --password-stdin
+
+    - name: Build and Push Docker Image
+      id: build-and-push
+      run: |
+        docker build -t $ACR_NAME.azurecr.io/azure-todo-app:${{ github.sha }} .
+        docker push $ACR_NAME.azurecr.io/azure-todo-app:${{ github.sha }}
 
     - name: Deploy Bicep Template
       id: deploy
       run: |
         az deployment sub create \
-          --name Deployment \
+          --name "Deployment-${COMMIT_HASH}" \
           --template-file .azure/main.bicep \
           --parameters bicep-parameters.json \
           --location westeurope
-
-    # - name: Set up Docker Buildx
-    #   uses: docker/setup-buildx-action@v1
-
-    # - name: Log in to Azure Container Registry
-    #   run: |
-    #     echo ${{ secrets.AZURE_CLIENT_SECRET }} | docker login $ACR_NAME.azurecr.io --username ${{ secrets.AZURE_CLIENT_ID }} --password-stdin
-
-    # - name: Build and Push Docker Image
-    #   id: build-and-push
-    #   run: |
-    #     docker build -t $ACR_NAME.azurecr.io/my-nextjs-app:${{ github.sha }} .
-    #     docker push $ACR_NAME.azurecr.io/my-nextjs-app:${{ github.sha }}

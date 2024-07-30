@@ -12,6 +12,7 @@ resource newRG 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   location: location
 }
 
+
 module app 'appResources.bicep' = {
   name: 'app-deployment'
   scope: newRG
