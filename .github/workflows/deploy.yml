@@ -33,15 +33,13 @@ jobs:
         fi
         echo COMMIT_HASH=$(echo "${GITHUB_SHA}" | cut -c1-7) >> $GITHUB_ENV
 
-    - name: Define Bicep Shared Params
+    - name: Deploy Shared Resources
       run: |
         echo "{
           'location': {'value': 'westeurope'},
           'acrName': {'value': '${{ secrets.ACR_NAME }}'}
         }" > bicep-shared-parameters.json
 
-    - name: Deploy Shared Resources
-      run: |
         az deployment sub create \
           --name "Shared-Deployment-${COMMIT_HASH}" \
           --template-file .azure/shared.bicep \
@@ -58,19 +56,17 @@ jobs:
     - name: Build and Push Docker Image
       id: build-and-push
       run: |
-        docker build -t $ACR_NAME.azurecr.io/azure-todo-app:${{ github.sha }} .
-        docker push $ACR_NAME.azurecr.io/azure-todo-app:${{ github.sha }}
+        docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/azure-todo-app:${{ github.sha }} .
+        docker push ${{ secrets.ACR_NAME }}.azurecr.io/azure-todo-app:${{ github.sha }}
 
-    - name: Define Bicep Main Params
+    - name: Deploy Bicep Template
+      id: deploy
       run: |
         echo "{
           'env': {'value': '$ENV'},
           'location': {'value': 'westeurope'},
         }" > bicep-main-parameters.json
 
-    - name: Deploy Bicep Template
-      id: deploy
-      run: |
         az deployment sub create \
           --name "Deployment-${COMMIT_HASH}" \
           --template-file .azure/main.bicep \
