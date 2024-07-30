@@ -44,7 +44,7 @@ jobs:
       run: |
         az deployment sub create \
           --name Deployment \
-          --template-file .azure/main.bicep \                                                                                         
+          --template-file .azure/main.bicep \
           --parameters bicep-parameters.json \
           --location westeurope
 
