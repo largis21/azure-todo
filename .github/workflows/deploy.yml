@@ -37,7 +37,7 @@ jobs:
       run: |
         echo "{
           'location': {'value': 'westeurope'},
-          'acrName': {'value': '$ACR_NAME'}
+          'acrName': {'value': '${{ secrets.ACR_NAME }}'}
         }" > bicep-shared-parameters.json
 
     - name: Deploy Shared Resources
