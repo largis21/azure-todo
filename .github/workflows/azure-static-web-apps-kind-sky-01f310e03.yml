@@ -23,9 +23,8 @@ jobs:
       - name: Export secrets to .env
         run: |
           echo "Creating .env file with GitHub Secrets"
-          echo "${{ toJson(secrets) }}" > secrets.json
-          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' secrets.json > .env
-          rm secrets.json
+          secrets=$(echo '${{ toJson(secrets) }}' | jq -r 'to_entries|map("\(.key)=\(.value|tostring|@sh)")|.[]')
+          echo "$secrets" > .env
 
       - name: Build And Deploy
         id: builddeploy
