@@ -19,6 +19,14 @@ jobs:
         with:
           submodules: true
           lfs: false
+
+      - name: Export secrets to .env
+        run: |
+          echo "Creating .env file with GitHub Secrets"
+          echo "${{ toJson(secrets) }}" > secrets.json
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' secrets.json > .env
+          rm secrets.json
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
