@@ -9,18 +9,22 @@ on:
 
 jobs:
   run_deployment_workflow_production:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
     name: Run Deployment Workflow
-    uses: ./deploy-azure-static-web-apps.yml
-    with:
-      environment: production
-
-  run_deployment_workflow_development:
-    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
-    name: Run Deployment Workflow
-    uses: ./deploy-azure-static-web-apps.yml
-    with:
-      environment: development
+    steps: 
 
+      - name: Set environment
+        id: env
+        run: echo "::set-output name=environment::${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}"
+
+      - name: Run Deployment Script
+        if: steps.env.outputs.environment == 'production'
+        run: ./deploy-azure-static-web-apps.yml
+        with:
+          environment: production
+
+      - name: Run Deployment Script
+        if: steps.env.outputs.environment == 'development'
+        run: ./deploy-azure-static-web-apps.yml
+        with:
+          environment: development
