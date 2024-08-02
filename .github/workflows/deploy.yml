@@ -32,4 +32,4 @@ jobs:
     name: Run Deployment Workflow
     uses: ./.github/workflows/deploy-azure-static-web-apps.yml
     with:
-      environment: ${{ env.ENVIRONMENT }}
+      environment: env.ENVIRONMENT
