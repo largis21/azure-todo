@@ -22,12 +22,12 @@ jobs:
 
       - name: Deploy to Production
         if: env.ENVIRONMENT == 'production'
-        run: .github/workflows/deploy-azure-static-web-apps.yml
+        uses: ./deploy-azure-static-web-apps.yml
         env:
           ENVIRONMENT: production
 
       - name: Deploy to Development
         if: env.ENVIRONMENT == 'development'
-        run: .github/workflows/deploy-azure-static-web-apps.yml
+        uses: ./deploy-azure-static-web-apps.yml
         env:
           ENVIRONMENT: development
