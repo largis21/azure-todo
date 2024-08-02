@@ -12,7 +12,6 @@ on:
 jobs:
   set_env:
     name: Set Environment
-    id: set_env
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.set_env.outputs.ENVIRONMENT }}
