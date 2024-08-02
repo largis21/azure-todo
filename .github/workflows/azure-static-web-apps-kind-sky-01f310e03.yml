@@ -21,10 +21,12 @@ jobs:
           lfs: false
 
       - name: Export secrets to .env
+        environment: ${{ vars.ENVIRONMENT_STAGE }}
         run: |
           echo "Creating .env file with GitHub Secrets"
           secrets=$(echo '${{ toJson(secrets) }}' | jq -r 'to_entries|map("\(.key)=\(.value|tostring|@sh)")|.[]')
           echo "$secrets" > .env
+          echo ENV: ${{ vars.ENVIRONMENT_STAGE }}
 
       - name: Build And Deploy
         id: builddeploy
