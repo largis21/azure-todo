@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+jobs:
+  run_deployment_workflow_production:
+    name: Run Deployment Workflow
+    runs-on: ubuntu-latest
+    steps: 
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=development" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy to Production
+        if: env.ENVIRONMENT == 'production'
+        uses: ./.github/workflows/deploy-azure-static-web-apps.yml
+        with:
+          environment: production
+
+      - name: Deploy to Development
+        if: env.ENVIRONMENT == 'development'
+        uses: ./.github/workflows/deploy-azure-static-web-apps.yml
+        with:
+          environment: development
