@@ -19,7 +19,7 @@ jobs:
     steps:
       - id: step1
         run: |
-           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "env=production" >> $GITHUB_OUTPUT
           else
             echo "env=development" >> $GITHUB_OUTPUT
