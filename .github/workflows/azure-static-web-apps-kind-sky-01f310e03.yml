@@ -14,6 +14,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    environment: production
     steps:
       - uses: actions/checkout@v3
         with:
@@ -21,12 +22,11 @@ jobs:
           lfs: false
 
       - name: Export secrets to .env
-        environment: ${{ vars.ENVIRONMENT_STAGE }}
         run: |
           echo "Creating .env file with GitHub Secrets"
           secrets=$(echo '${{ toJson(secrets) }}' | jq -r 'to_entries|map("\(.key)=\(.value|tostring|@sh)")|.[]')
           echo "$secrets" > .env
-          echo ENV: ${{ vars.ENVIRONMENT_STAGE }}
+          cat .env
 
       - name: Build And Deploy
         id: builddeploy
