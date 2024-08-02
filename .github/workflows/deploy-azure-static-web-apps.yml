@@ -34,7 +34,8 @@ jobs:
     environment: development
     steps:
       - name: TEST DEV
-        run: echo "TEST_SECRET: ${{ secrets.TEST_SECRET }}"
+        run: |
+          echo "TEST_SECRET: ${{ secrets.TEST_SECRET }}"
 
   build_and_deploy_prod:
     needs: prep
@@ -44,7 +45,8 @@ jobs:
     environment: production
     steps:
       - name: TEST PROD
-        run: echo "TEST_SECRET: ${{ secrets.TEST_SECRET }}"
+        run: |
+          echo "TEST_SECRET: ${{ secrets.TEST_SECRET }}"
 
   # build_and_deploy_job:
   #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
