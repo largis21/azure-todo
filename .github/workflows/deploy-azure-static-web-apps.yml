@@ -11,7 +11,7 @@ jobs:
   test:
     runs-on: ubtunu-latest
     name: Test
-    environment: $ENVIRONMENT
+    environment: ${{ inputs.environment }}
     steps:
       - name: Testing
         run: |
