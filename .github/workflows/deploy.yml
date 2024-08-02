@@ -10,21 +10,25 @@ on:
       - main
 
 jobs:
-  set_environment:
+  set_env:
     name: Set Environment
+    id: set_env
     runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set_env.outputs.ENVIRONMENT }}
     steps: 
       - name: Set environment
-        id: env
+        id: set_env
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+            echo "ENVIRONMENT=production" >> $GITHUB_OUTPUT
           else
-            echo "ENVIRONMENT=development" >> $GITHUB_ENV
+            echo "ENVIRONMENT=development" >> $GITHUB_OUTPUT
           fi
 
   run_deployment_workflow:
     name: Run Deployment Workflow
+    needs: set_env
     uses: ./.github/workflows/deploy-azure-static-web-apps.yml
     with:
-      environment: env.ENVIRONMENT
+      environment: ${{ needs.set_env.outputs.environment }}
