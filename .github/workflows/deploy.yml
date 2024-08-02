@@ -10,8 +10,8 @@ on:
       - main
 
 jobs:
-  run_deployment_workflow_production:
-    name: Run Deployment Workflow
+  set_environment:
+    name: Set Environment
     runs-on: ubuntu-latest
     steps: 
 
@@ -28,6 +28,7 @@ jobs:
         run: |
           ls .github/workflows
 
+  run_deployment_workflow:
     name: Run Deployment Workflow
     uses: ./.github/workflows/deploy-azure-static-web-apps.yml
     with:
