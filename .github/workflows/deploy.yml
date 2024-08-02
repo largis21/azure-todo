@@ -15,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
 
-      - uses: actions/checkout@v1
-
       - name: Set environment
         id: env
         run: |
@@ -30,7 +28,7 @@ jobs:
         run: |
           ls .github/workflows
 
-      - name: Run Deployment Workflow
-        uses: ./.github/workflows/deploy-azure-static-web-apps.yml
-        with:
-          environment: ${{ env.ENVIRONMENT }}
+    name: Run Deployment Workflow
+    uses: ./.github/workflows/deploy-azure-static-web-apps.yml
+    with:
+      environment: ${{ env.ENVIRONMENT }}
