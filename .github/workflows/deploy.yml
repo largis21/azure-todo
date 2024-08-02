@@ -27,6 +27,10 @@ jobs:
             echo "ENVIRONMENT=development" >> $GITHUB_ENV
           fi
 
+      - name: TEST
+        run: |
+          ls .github/workflows
+
       - name: Run Deployment Workflow
         uses: ./.github/workflows/deploy-azure-static-web-apps.yml
         with:
