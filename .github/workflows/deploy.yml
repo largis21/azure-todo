@@ -29,5 +29,6 @@ jobs:
     name: Run Deployment Workflow
     needs: set_env
     uses: ./.github/workflows/deploy-azure-static-web-apps.yml
+    environment: development
     with:
       environment: ${{ needs.set_env.outputs.environment }}
