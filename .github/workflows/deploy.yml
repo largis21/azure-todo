@@ -18,13 +18,13 @@ jobs:
         run: echo "echo ENVIRONMENT=${{ github.ref == 'refs/heads/main' && 'production' || 'development' }} >> $GITHUB_ENV"
 
       - name: Deploy to Production
-        if: $ENVIRONMENT == 'production'
+        if: env.ENVIRONMENT == 'production'
         run: ./deploy-azure-static-web-apps.yml
         env:
           ENVIRONMENT: production
 
       - name: Deploy to Development
-        if: $ENVIRONMENT == 'development'
+        if: env.ENVIRONMENT == 'development'
         run: ./deploy-azure-static-web-apps.yml
         env:
           ENVIRONMENT: development
