@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: TEST DEV
         run: |
-          echo "TEST_SECRET: ${{ secrets.TEST_SECRET }}"
+          echo "IS_DEV: ${{ secrets.TEST_SECRET == 'dev' }}"
 
   build_and_deploy_prod:
     needs: prep
