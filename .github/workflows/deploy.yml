@@ -21,13 +21,13 @@ jobs:
         run: echo "echo ENVIRONMENT=${{ github.ref == 'refs/heads/main' && 'production' || 'development' }} >> $GITHUB_ENV"
 
       - name: Deploy to Production
-        if: env.ENVIRONMENT == 'production'
+        if: $ENVIRONMENT == 'production'
         uses: ./.github/workflows/deploy-azure-static-web-apps.yml
         with:
           environment: production
 
       - name: Deploy to Development
-        if: env.ENVIRONMENT == 'development'
+        if: $ENVIRONMENT == 'development'
         uses: ./.github/workflows/deploy-azure-static-web-apps.yml
         with:
           environment: development
