@@ -1,0 +1,24 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+jobs:
+  run_deployment_workflow_production:
+    if: github.ref == 'refs/heads/main'
+    name: Run Deployment Workflow
+    uses: ./deploy-azure-static-web-apps.yml
+    with:
+      environment: production
+
+  run_deployment_workflow_development:
+    if: github.ref != 'refs/heads/main'
+    name: Run Deployment Workflow
+    uses: ./deploy-azure-static-web-apps.yml
+    with:
+      environment: development
+
