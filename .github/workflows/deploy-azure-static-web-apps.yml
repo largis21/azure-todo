@@ -28,7 +28,7 @@ jobs:
 
   build_and_deploy_dev:
     needs: prep
-    if: needs.prep.outputs.isUpload == true && needs.prep.outputs.env == development
+    if: needs.prep.outputs.isUpload == "true" && needs.prep.outputs.env == "development"
     environment: development
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +38,7 @@ jobs:
 
   build_and_deploy_prod:
     needs: prep
-    if: needs.prep.outputs.isUpload == true && needs.prep.outputs.env == production
+    if: needs.prep.outputs.isUpload == "true" && needs.prep.outputs.env == "production"
     environment: production
     runs-on: ubuntu-latest
     steps:
