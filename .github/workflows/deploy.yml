@@ -27,14 +27,7 @@ jobs:
             echo "ENVIRONMENT=development" >> $GITHUB_ENV
           fi
 
-      - name: Deploy to Production
-        if: env.ENVIRONMENT == 'production'
+      - name: Run Deployment Workflow
         uses: ./.github/workflows/deploy-azure-static-web-apps.yml
         with:
-          environment: production
-
-      - name: Deploy to Development
-        if: env.ENVIRONMENT == 'development'
-        uses: ./.github/workflows/deploy-azure-static-web-apps.yml
-        with:
-          environment: development
+          environment: ${{ env.ENVIRONMENT }}
