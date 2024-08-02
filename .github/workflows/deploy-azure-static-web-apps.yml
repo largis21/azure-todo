@@ -9,9 +9,9 @@ on:
 
 jobs:
   test:
-    runs-on: ubtunu-latest
+    runs-on: ubuntu-latest
     name: Test
-    environment: ${{ inputs.environment }}
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Testing
         run: |
