@@ -15,5 +15,6 @@ jobs:
     steps:
       - name: Testing
         run: |
-          echo "TEST_SECRET: ${{ secrets.TEST_SECRET }}"
           echo "ENV: ${{ inputs.environment }}"
+          echo "TEST_SECRET: ${{ secrets.TEST_SECRET }}"
+          echo "all env: ${{ toJSON(secrets) }}"
