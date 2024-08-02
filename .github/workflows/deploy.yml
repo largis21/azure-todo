@@ -15,16 +15,16 @@ jobs:
 
       - name: Set environment
         id: env
-        run: echo "::set-output name=environment::${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}"
+        run: echo "echo ENVIRONMENT=${{ github.ref == 'refs/heads/main' && 'production' || 'development' }} >> $GITHUB_ENV"
 
       - name: Deploy to Production
-        if: env.environment == 'production'
+        if: $ENVIRONMENT == 'production'
         run: ./deploy-azure-static-web-apps.yml
         env:
           ENVIRONMENT: production
 
       - name: Deploy to Development
-        if: env.environment == 'development'
+        if: $ENVIRONMENT == 'development'
         run: ./deploy-azure-static-web-apps.yml
         env:
           ENVIRONMENT: development
