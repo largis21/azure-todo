@@ -14,7 +14,6 @@ jobs:
     name: Set Environment
     runs-on: ubuntu-latest
     steps: 
-
       - name: Set environment
         id: env
         run: |
@@ -23,10 +22,6 @@ jobs:
           else
             echo "ENVIRONMENT=development" >> $GITHUB_ENV
           fi
-
-      - name: TEST
-        run: |
-          ls .github/workflows
 
   run_deployment_workflow:
     name: Run Deployment Workflow
