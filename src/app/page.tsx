@@ -1,16 +1,18 @@
-import { GetTimeForm } from "@/components/GetTimeForm";
-
-export const dynamic = "force-dynamic";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
     <div>
-      <div>
-        This is my webapp. The time on the server at buildtime was{" "}
-        {new Date().toLocaleString()}
-      </div>
-      <div>Here is a secret: {process.env.TEST_SECRET}</div>
-      <GetTimeForm />
+      <div>This is static content</div>
+      <Suspense>
+        <SlowComponent time={1000} />
+      </Suspense>
     </div>
   );
+}
+
+async function SlowComponent({ time }: { time: number }) {
+  await new Promise((resolve) => setTimeout(resolve, time));
+
+  return <div>This is a slow component that took {time} ms</div>;
 }
